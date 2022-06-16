@@ -18,9 +18,9 @@ export default function HomePage() {
     return (
         <Box>
             <AppBar />
-            <ProductsPage />
+            {/* <ProductsPage /> */}
             <KnifeCardList />
-            <AddKnifeItemButton />
+
             <Footer />
         </Box>
     )

@@ -6,7 +6,7 @@ import KnifeDialog from "../pages/Homepage/KnifeDialog";
 
 
 
-export default function AddKnifeItemButton() { // <= { onAfterSubmit } в пропсах закаменчено
+export default function AddKnifeItemButton({ reloadKnifes }) { // <=  в пропсах закаменчено
     const [isOpen, setIsOpen] = useState(false);
     const open = () => setIsOpen(true)
 
@@ -33,7 +33,10 @@ export default function AddKnifeItemButton() { // <= { onAfterSubmit } в про
             >
                 <AddIcon />
             </Fab>
-            <KnifeDialog open={isOpen} onClose={() => setIsOpen(false)} />
+            <KnifeDialog
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                reloadKnifes={reloadKnifes} />
             {/* <KnifeItemEditor
                 open={isOpen}
                 onClose={() => setIsOpen(false)}

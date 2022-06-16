@@ -13,6 +13,7 @@ export default function LoginPage() {
     const handleSubmit = async (values, { setSubmitting }) => {
 
         const { email, password } = values;
+
         const response = await fetch(
             'https://tms-js-pro-back-end.herokuapp.com/api/users/signin',
             {
@@ -27,7 +28,7 @@ export default function LoginPage() {
                 }),
             },
         );
-        const data = await response.json().catch();
+        const data = await response.json();
 
         if (!response.ok) {
             const err = await response.json();
@@ -55,7 +56,7 @@ export default function LoginPage() {
         validateOnMount: true,
     });
 
-    console.log(formik);
+    // console.log(formik);
 
     return (
         <Page position="static">

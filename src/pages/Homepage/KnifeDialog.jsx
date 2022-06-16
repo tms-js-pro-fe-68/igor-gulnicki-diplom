@@ -35,11 +35,12 @@ function FormikTextField({ name, formik, ...otherProps }) {
 }
 
 
-export default function PizzaDialog({
+export default function KnifeDialog({
     title,
     text,
     onClose,
     onConfirm,
+    reloadKnifes,
     ...otherProps
 }) {
     // const queryClient = useQueryClient()
@@ -88,7 +89,9 @@ export default function PizzaDialog({
         // 4 обновить список ресурсов чтобы отобразился только что созданный,
         // у вас реализация может отличаться, у меня пиццы в raect query, по этому
         // вызываю ф-ю очистки кеша с react query
-        //   queryClient.invalidateQueries('pizzas')
+        if (reloadKnifes) {
+            reloadKnifes()
+        }
 
         setSubmitting(false)
         onClose()
@@ -126,71 +129,81 @@ export default function PizzaDialog({
 
     return (
         <Dialog {...{ onClose, ...otherProps }}>
-            <form onSubmit={formik.handleSubmit}>
-                <DialogTitle>Добавить нож</DialogTitle>
-                <DialogContent>
-                    <Box
-                        sx={{
-                            p: 2,
-                            display: 'grid',
-                            gap: 2,
-                            gridTemplateColumns: '1fr 1fr',
-                        }}
-                    >
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                            <FormikTextField
-                                autoComplete="off"
-                                label="Name"
-                                name="name"
-                                formik={formik}
-                                sx={{ mb: 2 }}
-                            />
-                            <FormikTextField
-                                label="Description"
-                                type="description"
-                                name="description"
-                                formik={formik}
-                                sx={{ mb: 2 }}
-                            />
-                            <FormikTextField
-                                label="Price"
-                                type="number"
-                                name="price"
-                                formik={formik}
-                                sx={{ mb: 2 }}
-                            />
-                        </Box>
+            <Box sx={{
+                bgcolor: 'rgba(165, 165, 165, 0.5)',
+                backgroundImage: 'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiidDKTdPXUwHA73HvaQEuzWAHnMgESrUhg&usqp=CAU)',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}>
+                <form onSubmit={formik.handleSubmit} >
+                    <DialogTitle sx={{ color: 'white' }}>Добавить нож</DialogTitle>
+                    <DialogContent>
                         <Box
                             sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                // justifyContent: 'center',
-                                alignItems: 'center',
+                                p: 2,
+                                display: 'grid',
+                                gap: 2,
+                                gridTemplateColumns: '1fr 1fr'
                             }}
                         >
+                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <FormikTextField
+                                    autoComplete="off"
+                                    label="Name"
+                                    name="name"
+                                    formik={formik}
+                                    sx={{ mb: 2 }}
+                                />
+                                <FormikTextField
+                                    label="Description"
+                                    type="description"
+                                    name="description"
+                                    formik={formik}
+                                    inputProps={{ sx: { color: 'white' } }}
+                                    sx={{ mb: 2, color: 'white' }}
+                                />
+                                <FormikTextField
+                                    label="Price"
+                                    type="number"
+                                    name="price"
+                                    formik={formik}
+                                    sx={{ mb: 2 }}
+                                />
+                            </Box>
                             <Box
-                                component="img"
-                                src={imagePreview}
-                                width="150px"
-                                height="150px"
-                                sx={{ mb: 2 }}
-                            />
-                            <input
-                                name="image"
-                                type="file"
-                                // value тут не нужен, достаточно сетить выбранную картинку в стейт image (uncontrolled)
-                                onChange={e => setImage(e.target.files[0])}
-                            />
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    // justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Box
+                                    component="img"
+                                    src={imagePreview}
+                                    width="150px"
+                                    height="150px"
+                                    sx={{ mb: 2 }}
+                                />
+                                <input
+                                    name="image"
+                                    type="file"
+                                    // value тут не нужен, достаточно сетить выбранную картинку в стейт image (uncontrolled)
+                                    onChange={e => setImage(e.target.files[0])}
+                                />
+                            </Box>
                         </Box>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button type="submit" autoFocus>
-                        добавить
-                    </Button>
-                </DialogActions>
-            </form>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={onClose} sx={{ color: 'white' }}>Отменить</Button>
+                        <Button type="submit" autoFocus sx={{ color: 'white' }}>
+                            добавить
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Box>
         </Dialog>
+
     )
 }

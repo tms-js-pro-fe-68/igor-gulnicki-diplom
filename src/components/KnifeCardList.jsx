@@ -12,9 +12,10 @@ import {
   Stack,
   Typography
 } from '@mui/material'
-import { Favorite as FavoriteIcon, Share as ShareIcon } from '@mui/icons-material'
+import { Favorite as FavoriteIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import ConfirmDialog from './ConfirmDialog';
 import { OrderAction } from "./ProductsPage";
+import AddKnifeItemButton from "./AddKnifeItemButton";
 
 
 function ClickBoundary(props) {
@@ -22,7 +23,7 @@ function ClickBoundary(props) {
 }
 
 
-function KnifeCard({ id, imageUrl, name, price, description, onClick, }) {
+function KnifeCard({ id, imageUrl, name, price, description, onClick, reloadKnifes }) {
 
   const handleDelete = () => {
     fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes/${id}`, {
@@ -32,7 +33,7 @@ function KnifeCard({ id, imageUrl, name, price, description, onClick, }) {
         'Content-Type': 'application/json',
         Authorization: `Token ${sessionStorage.token}`,
       },
-    })
+    }).then(reloadKnifes)
   }
 
   const [isDeleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
@@ -57,7 +58,7 @@ function KnifeCard({ id, imageUrl, name, price, description, onClick, }) {
           </ClickBoundary>
         </Stack>
       </Paper> */}
-      <Card sx={{ maxWidth: 250, height: 350 }}
+      <Card onClick={onClick} sx={{ maxWidth: 250, height: 350, }}
       >
         <CardMedia
           component="img"
@@ -71,7 +72,7 @@ function KnifeCard({ id, imageUrl, name, price, description, onClick, }) {
               {name}
             </Typography>
             <Typography variant="body1" color="textSecondary" sx={{ fontWeight: 'bold' }} >
-              {price}$
+              {price}руб.
             </Typography>
           </Stack>
           <Typography variant="body1" color="textSecondary" >
@@ -82,8 +83,11 @@ function KnifeCard({ id, imageUrl, name, price, description, onClick, }) {
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
+          <IconButton edge="end" >
+            <EditIcon />
+          </IconButton>
+          <IconButton edge="end" onClick={handleDeleteConfirmOpen}>
+            <DeleteIcon />
           </IconButton>
           <OrderAction />
         </CardActions>
@@ -95,9 +99,9 @@ function KnifeCard({ id, imageUrl, name, price, description, onClick, }) {
         onConfirm={handleDelete}
         onClose={handleDeleteConfirmClose} />
     </>
+
   )
 }
-
 
 
 export default function KnifeCardList() {
@@ -141,14 +145,24 @@ export default function KnifeCardList() {
     <>
       <p>{isLoading && 'loading....'}</p>
       <p>{error}</p>
-      <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: '1fr', p: 2 }}>
+      <Box sx={{
+        p: 2,
+        display: 'grid',
+        gap: 3,
+        gridTemplateColumns: {
+          xs: "repeat(2, 1fr)",
+          md: "repeat(3, 1fr)",
+          lg: "repeat(5, 1fr)",
+        },
+      }}>
         {knifes.map((knife) => (
           <KnifeCard key={knife.id} {...knife}
             onClick={handleItemClick}
-            onChange={loadKnifes}
+            reloadKnifes={loadKnifes}
           />
         ))}
       </Box>
+      <AddKnifeItemButton reloadKnifes={loadKnifes} />
     </>
   );
 }

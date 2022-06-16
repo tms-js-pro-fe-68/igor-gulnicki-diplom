@@ -31,7 +31,7 @@ export default function KnifeItemEditor({ id, onClose, onAfterSubmit, ...otherPr
     }, [])
 
 
-    const modifyTodo = async () => {
+    const modifyKnife = async () => {
         const slashIdOrEmpty = id ? `/${id}` : ''
         await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes${slashIdOrEmpty}`, {
             method: id ? 'PUT' : 'POST',
@@ -47,11 +47,9 @@ export default function KnifeItemEditor({ id, onClose, onAfterSubmit, ...otherPr
     }
 
 
-
     return (
         <Dialog {...{ onClose, ...otherProps }}>
-            <DialogTitle >{id ? 'Edit' : 'Add'}knife </DialogTitle>
-
+            <DialogTitle >{id ? 'Edit' : 'Add'}knife</DialogTitle>
             <DialogContent>
                 <TextField
                     value={description}
@@ -60,7 +58,7 @@ export default function KnifeItemEditor({ id, onClose, onAfterSubmit, ...otherPr
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={modifyTodo} autoFocus variant='contained'>
+                <Button onClick={modifyKnife} autoFocus variant='contained'>
                     {id ? 'Edit' : 'Add'}
                 </Button>
             </DialogActions>
