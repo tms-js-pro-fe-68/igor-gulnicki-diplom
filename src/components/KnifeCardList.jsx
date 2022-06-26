@@ -25,8 +25,6 @@ function ClickBoundary(props) {
 
 
 function KnifeCard({ id, imageUrl, name, price, description, onClick, reloadKnifes }) {
-  console.log('id-card');
-  console.log(id);
   const handleDelete = () => {
     fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes/${id}`, {
       method: 'DELETE',

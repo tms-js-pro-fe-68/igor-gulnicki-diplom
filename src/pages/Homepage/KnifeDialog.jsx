@@ -44,13 +44,12 @@ export default function KnifeDialog({
     reloadKnifes,
     ...otherProps
 }) {
-    // const queryClient = useQueryClient()
-    // состояние для файла
-    const [image, setImage] = useState(null)
-    const handleSubmit = async (values, { setSubmitting }) => {
-        const isPost = !id;
-        const isPut = !isPost;
+    const isPost = !id;
+    const isPut = !isPost;
 
+    const [image, setImage] = useState(null)
+
+    const handleSubmit = async (values, { setSubmitting }) => {
         // 1 POST запрос на создание ресурса
         //   const { data } = await api.post('/pizzas', values)
         // добавить логику с PUT
@@ -134,7 +133,18 @@ export default function KnifeDialog({
         }
     }, [image])
 
-    const isPost = !id;
+    useEffect(() => {
+        if (!otherProps.open) return;
+        if (isPost) return;
+        fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                formik.setValues(data)
+                setImagePreview(data.imageUrl)
+            })
+
+    }, [otherProps.open])
+
     const isAdd = isPost;
 
     return (
@@ -185,7 +195,6 @@ export default function KnifeDialog({
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    // justifyContent: 'center',
                                     alignItems: 'center',
                                 }}
                             >
@@ -196,13 +205,12 @@ export default function KnifeDialog({
                                     height="150px"
                                     sx={{ mb: 2 }}
                                 />
-                                {/* {!id &&} */}
-                                <input
+                                {isAdd && <input
                                     name="image"
                                     type="file"
                                     // value тут не нужен, достаточно сетить выбранную картинку в стейт image (uncontrolled)
                                     onChange={e => setImage(e.target.files[0])}
-                                />
+                                />}
                             </Box>
                         </Box>
                     </DialogContent>
