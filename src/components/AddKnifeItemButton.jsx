@@ -6,21 +6,9 @@ import KnifeDialog from "../pages/Homepage/KnifeDialog";
 
 
 
-export default function AddKnifeItemButton({ reloadKnifes }) { // <=  в пропсах закаменчено
+export default function AddKnifeItemButton({ reloadKnifes }) {
     const [isOpen, setIsOpen] = useState(false);
     const open = () => setIsOpen(true)
-
-    // const handleClick = () => {
-    //     fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes`, {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: '<application />json',
-    //     'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
-    //     Authorization: `Token ${sessionStorage.token}`,
-    //   },
-    //   body: JSON.stringify({description}),
-    // })
-    // }
 
     return (
         <>
