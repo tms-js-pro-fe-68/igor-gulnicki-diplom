@@ -12,6 +12,7 @@ export default function ConfirmDialog({ title,
     text,
     onClose,
     onConfirm,
+    confirmText,
     ...otherProps
 }) {
     return (
@@ -25,9 +26,9 @@ export default function ConfirmDialog({ title,
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose}>Отменить</Button>
                 <Button onClick={onConfirm} autoFocus>
-                    Confirm
+                    {confirmText}
                 </Button>
             </DialogActions>
         </Dialog>

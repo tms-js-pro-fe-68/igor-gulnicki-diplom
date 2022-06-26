@@ -36,6 +36,7 @@ function FormikTextField({ name, formik, ...otherProps }) {
 
 
 export default function KnifeDialog({
+    id,
     title,
     text,
     onClose,
@@ -46,13 +47,16 @@ export default function KnifeDialog({
     // const queryClient = useQueryClient()
     // состояние для файла
     const [image, setImage] = useState(null)
-
     const handleSubmit = async (values, { setSubmitting }) => {
+        const isPost = !id;
+        const isPut = !isPost;
+
         // 1 POST запрос на создание ресурса
         //   const { data } = await api.post('/pizzas', values)
         // добавить логику с PUT
-        const response = await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes`, {
-            method: 'POST',
+        const slashIdOrEmpty = isPut ? `/${id}` : ''                  //  if(IsDunkel) 
+        const response = await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes${slashIdOrEmpty}`, {
+            method: isPut ? 'PUT' : 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -60,30 +64,33 @@ export default function KnifeDialog({
             },
             body: JSON.stringify(values)
         })
-        const data = await response.json()
-        // 2 POST запрос с формой в которую добавлен файл
-        const resource = 'knife' // не забудьте поменять
-        const formData = new FormData()
-        formData.append('image', image)
-        const { data: imageUrl } = await axios.post(
-            'https://server.kemalkalandarov.lol/api/images',
-            formData,
-            { params: { resource, id: data.id } }, //
-        )
+
+        if (isPost) {
+            const data = await response.json()
+            // 2 POST запрос с формой в которую добавлен файл
+            const resource = 'knife' // не забудьте поменять
+            const formData = new FormData()
+            formData.append('image', image)
+            const { data: imageUrl } = await axios.post(
+                'https://server.kemalkalandarov.lol/api/images',
+                formData,
+                { params: { resource, id: data.id } }, //
+            )
 
 
 
-        // 3 PUT обновление только что созданного ресурса, запись url картинки
-        //   await api.put(`/pizzas/${data.id}`, { imageUrl })
-        await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes/${data.id}`, {
-            method: 'PUT',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Token ${sessionStorage.token}`,
-            },
-            body: JSON.stringify({ imageUrl })
-        })
+            // 3 PUT обновление только что созданного ресурса, запись url картинки
+            //   await api.put(`/pizzas/${data.id}`, { imageUrl })
+            await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes/${data.id}`, {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `Token ${sessionStorage.token}`,
+                },
+                body: JSON.stringify({ imageUrl })
+            })
+        }
 
 
         // 4 обновить список ресурсов чтобы отобразился только что созданный,
@@ -127,6 +134,9 @@ export default function KnifeDialog({
         }
     }, [image])
 
+    const isPost = !id;
+    const isAdd = isPost;
+
     return (
         <Dialog {...{ onClose, ...otherProps }}>
             <Box sx={{
@@ -137,7 +147,7 @@ export default function KnifeDialog({
                 backgroundPosition: 'center',
             }}>
                 <form onSubmit={formik.handleSubmit} >
-                    <DialogTitle sx={{ color: 'white' }}>Добавить нож</DialogTitle>
+                    <DialogTitle sx={{ color: 'white' }}>{isAdd ? 'Создать нож ' : 'Изменить нож'}</DialogTitle>
                     <DialogContent>
                         <Box
                             sx={{
@@ -186,6 +196,7 @@ export default function KnifeDialog({
                                     height="150px"
                                     sx={{ mb: 2 }}
                                 />
+                                {/* {!id &&} */}
                                 <input
                                     name="image"
                                     type="file"
@@ -198,7 +209,7 @@ export default function KnifeDialog({
                     <DialogActions>
                         <Button onClick={onClose} sx={{ color: 'white' }}>Отменить</Button>
                         <Button type="submit" autoFocus sx={{ color: 'white' }}>
-                            добавить
+                            {isAdd ? 'Создать' : 'Изменить'}
                         </Button>
                     </DialogActions>
                 </form>
