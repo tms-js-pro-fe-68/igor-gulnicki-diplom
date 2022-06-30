@@ -10,10 +10,8 @@ import {
 import axios from 'axios'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-//   import { useQueryClient } from 'react-query'
 import { object, string, number } from 'yup'
-// import api from '../../api'
-// import FormikTextField from '../../components/FormikTextField'
+
 
 
 function FormikTextField({ name, formik, ...otherProps }) {
@@ -50,9 +48,6 @@ export default function KnifeDialog({
     const [image, setImage] = useState(null)
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        // 1 POST запрос на создание ресурса
-        //   const { data } = await api.post('/pizzas', values)
-        // добавить логику с PUT
         const slashIdOrEmpty = isPut ? `/${id}` : ''                  //  if(IsDunkel) 
         const response = await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes${slashIdOrEmpty}`, {
             method: isPut ? 'PUT' : 'POST',
@@ -66,8 +61,7 @@ export default function KnifeDialog({
 
         if (isPost) {
             const data = await response.json()
-            // 2 POST запрос с формой в которую добавлен файл
-            const resource = 'knife' // не забудьте поменять
+            const resource = 'knife'
             const formData = new FormData()
             formData.append('image', image)
             const { data: imageUrl } = await axios.post(
@@ -77,9 +71,6 @@ export default function KnifeDialog({
             )
 
 
-
-            // 3 PUT обновление только что созданного ресурса, запись url картинки
-            //   await api.put(`/pizzas/${data.id}`, { imageUrl })
             await fetch(`https://tms-js-pro-back-end.herokuapp.com/api/knifes/${data.id}`, {
                 method: 'PUT',
                 headers: {
@@ -92,9 +83,6 @@ export default function KnifeDialog({
         }
 
 
-        // 4 обновить список ресурсов чтобы отобразился только что созданный,
-        // у вас реализация может отличаться, у меня пиццы в raect query, по этому
-        // вызываю ф-ю очистки кеша с react query
         if (reloadKnifes) {
             reloadKnifes()
         }
@@ -127,7 +115,7 @@ export default function KnifeDialog({
         if (image) {
             reader.readAsDataURL(image)
         }
-        // чистим onload чтобы не сработал setImagePreview когда компонент анмаунтится
+
         return () => {
             reader.onload = undefined
         }
@@ -208,7 +196,6 @@ export default function KnifeDialog({
                                 {isAdd && <input
                                     name="image"
                                     type="file"
-                                    // value тут не нужен, достаточно сетить выбранную картинку в стейт image (uncontrolled)
                                     onChange={e => setImage(e.target.files[0])}
                                 />}
                             </Box>

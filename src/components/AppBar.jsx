@@ -1,5 +1,4 @@
 import { AccountCircle } from '@mui/icons-material';
-
 import {
     AppBar as MuiAppBar,
     Box,

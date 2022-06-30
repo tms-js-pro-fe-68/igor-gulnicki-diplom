@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { object, string } from "yup";
 import Page from "../../components/Page";
-// import api from '../../api';
 
 
 export default function LoginPage() {

@@ -1,9 +1,7 @@
 import { Add as AddIcon } from "@mui/icons-material";
 import { Fab } from "@mui/material";
 import { useState } from "react";
-// import KnifeItemEditor from "../pages/Homepage/KnifeItemEditor";
 import KnifeDialog from "../pages/Homepage/KnifeDialog";
-
 
 
 export default function AddKnifeItemButton({ reloadKnifes }) {
@@ -25,11 +23,6 @@ export default function AddKnifeItemButton({ reloadKnifes }) {
                 open={isOpen}
                 onClose={() => setIsOpen(false)}
                 reloadKnifes={reloadKnifes} />
-            {/* <KnifeItemEditor
-                open={isOpen}
-                onClose={() => setIsOpen(false)}
-                onAfterSubmit={onAfterSubmit}
-            /> */}
         </>
     )
 }
